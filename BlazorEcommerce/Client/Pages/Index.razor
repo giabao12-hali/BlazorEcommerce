@@ -1,5 +1,17 @@
 ﻿@page "/"
+@page "/{categoryUrl}"
+@inject IProductSvc ProductSvc
 
 <PageTitle>GiaBao Shop</PageTitle>
 
 <ProductList />
+
+@code{
+	[Parameter]
+	public string? CategoryUrl { get; set; } = null;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		await ProductSvc.GetProducts(CategoryUrl);
+	}
+}

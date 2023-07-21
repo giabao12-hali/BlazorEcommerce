@@ -2,6 +2,7 @@ global using BlazorEcommerce.Shared;
 global using BlazorEcommerce.Server.Data;
 global using Microsoft.EntityFrameworkCore;
 global using BlazorEcommerce.Server.Services.ProductSvc;
+global using BlazorEcommerce.Server.Services.CategorySvc;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,12 +13,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("myDB")));
-
+// swagger api
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//
 
+// services
 builder.Services.AddScoped<IProductSvc, ProductSvc>();
-
+builder.Services.AddScoped<ICategorySvc, CategorySvc>();
+//
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

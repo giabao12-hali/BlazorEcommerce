@@ -2,8 +2,9 @@
 {
 	public interface IProductSvc
 	{
+		event Action ProductChanged;
 		List<Product> Products { get; set; }
-		Task GetProducts();
+		Task GetProducts(string? categoryUrl = null);
 		Task<ServiceResponse<Product>> GetSingleProduct(int productId);
 	}
 }
