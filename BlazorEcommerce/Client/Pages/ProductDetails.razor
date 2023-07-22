@@ -1,5 +1,6 @@
 ﻿@page "/product/{id:int}"
 @inject IProductSvc ProductSvc
+@inject ICartSvc CartSvc
 
 @if(product == null)
 {
@@ -39,6 +40,9 @@ else
 					$@GetSelectedVariant().Price
 				</h4>
 			}
+			<button class="btn btn-primary" @onclick="AddToCart">
+				<i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart
+			</button>
 		</div>
 	</div>
 }
@@ -73,5 +77,16 @@ else
 	{
 		var variant = product.Variants.FirstOrDefault(v => v.ProductTypeId == currentTypeId);
 		return variant;
+	}
+
+	private async Task AddToCart()
+	{
+		var productVariant = GetSelectedVariant();
+		var cartItem = new CartItem
+		{
+			ProductId = productVariant.ProductId,
+			ProductTypeId = productVariant.ProductTypeId
+		};
+		await CartSvc.AddToCart(cartItem);
 	}
 }
