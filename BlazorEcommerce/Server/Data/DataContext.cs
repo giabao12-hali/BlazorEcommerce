@@ -60,6 +60,7 @@
 					Description = "Assassin's Creed Unity is an action-adventure video game developed by Ubisoft Montreal and published by Ubisoft. It was released in November 2014 for PlayStation 4, Windows, and Xbox One, and in December 2020 for Stadia. It is the eighth major installment in the Assassin's Creed series, and the successor to 2013's Assassin's Creed IV: Black Flag. It also has ties to Assassin's Creed Rogue, which was released for the previous generation consoles on the same day as Unity.",
 					ImageUrl = "https://upload.wikimedia.org/wikipedia/en/4/41/Assassin%27s_Creed_Unity_cover.jpg",
 					CategoryId = 3,
+					Featured = true
 				},
 				new Product
 				{
@@ -76,6 +77,7 @@
 					Description = "Death Stranding is a 2019 action game developed by Kojima Productions and published by Sony Interactive Entertainment for the PlayStation 4. It is the first game from director Hideo Kojima and Kojima Productions after their split from Konami in 2015. A Windows port licensed by Sony was released by 505 Games in July 2020. A director's cut version was released for the PlayStation 5 in September 2021, followed by a release for Windows in March 2022. A macOS version is scheduled to be released, although a release date has yet to be announced.",
 					ImageUrl = "https://upload.wikimedia.org/wikipedia/en/2/22/Death_Stranding.jpg",
 					CategoryId = 2,
+					Featured = true
 				},
 				new Product
 				{
@@ -108,6 +110,7 @@
 					Description = "Your Name (Japanese: 君の名は。, Hepburn: Kimi no Na wa) is a 2016 Japanese animated romantic fantasy film written and directed by Makoto Shinkai, produced by CoMix Wave Films and distributed by Toho. It depicts the story of high school students Taki Tachibana and Mitsuha Miyamizu, who suddenly begin to swap bodies despite having never met, unleashing chaos on each other's lives.",
 					ImageUrl = "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png",
 					CategoryId = 2,
+					Featured = true
 				},
 				new Product
 				{
@@ -117,7 +120,7 @@
 					ImageUrl = "https://m.media-amazon.com/images/I/91ygvOV8F7L._SL1500_.jpg",
 					CategoryId = 1
 				}
-				);
+				);;
 
 			modelBuilder.Entity<ProductVariant>().HasData(
 				new ProductVariant
