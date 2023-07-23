@@ -4,6 +4,7 @@ global using Microsoft.EntityFrameworkCore;
 global using BlazorEcommerce.Server.Services.ProductSvc;
 global using BlazorEcommerce.Server.Services.CategorySvc;
 global using BlazorEcommerce.Server.Services.CartSvc;
+global using BlazorEcommerce.Server.Services.AuthSvc;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("myDB")));
+
 // swagger api
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,6 +25,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductSvc, ProductSvc>();
 builder.Services.AddScoped<ICategorySvc, CategorySvc>();
 builder.Services.AddScoped<ICartSvc, CartSvc>();
+builder.Services.AddScoped<IAuthSvc, AuthSvc>();
 //
 var app = builder.Build();
 
