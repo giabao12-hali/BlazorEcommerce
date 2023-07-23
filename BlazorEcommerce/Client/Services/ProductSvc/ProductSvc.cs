@@ -24,8 +24,13 @@
 
         public async Task GetProducts(string? categoryUrl = null)
 		{
-			var result = categoryUrl == null ? 
-				await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product/featured") :
+			var result = categoryUrl == null ?
+				// chỉ hiển thị mỗi feature product 
+				// await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product/featured") <- gọi đến API feature
+
+				// hiển thị feature product lẫn list product
+				//await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product") <- không gọi đến API feature
+				await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product") :
                 await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/category/{categoryUrl}");
 			if (result != null && result.Data != null)
 				Products = result.Data;

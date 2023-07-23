@@ -1,0 +1,78 @@
+﻿@page "/cart"
+@inject ICartSvc CartSvc
+
+<PageTitle>Shopping Cart</PageTitle>
+
+<h3>Shopping Cart</h3>
+
+@if(cartProducts == null || cartProducts.Count == 0)
+{
+	<span>@message</span>
+}
+else
+{
+	<div>
+		@foreach(var product in cartProducts)
+		{
+			<div class="container">
+				<div class="image-wrapper">
+					<img src="@product.ImageUrl" class="image"/>
+				</div>
+				<div class="name">
+					<h5><a href="/product/@product.ProductId">@product.Title</a></h5>
+					<span>@product.ProductType</span><br />
+					<input type="number" value="@product.Quantity"
+					 @onchange="@((ChangeEventArgs args) => UpdateQuantity(args, product))"
+					 class="form-control input-quantity"
+					min="1" 
+					onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
+					<button class="btn-delete" @onclick="@(() =>
+						RemoveProductFromCart(product.ProductId, product.ProductTypeId))">Delete</button>
+				</div>
+				<div class="cart-product-price">
+					$@(product.Price * product.Quantity)
+				</div>
+			</div>
+		}
+		<div class="cart-product-price-total">
+			Total (@cartProducts.Count): $@cartProducts.Sum(product => @product.Price * product.Quantity)
+		</div>
+	</div>
+}
+
+@code {
+	List<CartProductResponse> cartProducts = null;
+	string message = "Loading cart...";
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadCart();
+	}
+
+	private async Task RemoveProductFromCart(int producttId, int productTypeId)
+	{
+		await CartSvc.RemoveProductFromCart(producttId, productTypeId);
+		await LoadCart();
+	}
+
+	private async Task LoadCart()
+	{
+		if ((await CartSvc.GetCartItems()).Count == 0)
+		{
+			message = "Your cart is empty.";
+			cartProducts = new List<CartProductResponse>();
+		}
+		else
+		{
+			cartProducts = await CartSvc.GetCartProducts();
+		}
+	}
+
+	private async Task UpdateQuantity(ChangeEventArgs args, CartProductResponse product)
+	{
+		product.Quantity = int.Parse(args.Value.ToString());
+		if (product.Quantity < 1)
+			product.Quantity = 1;
+		await CartSvc.UpdateQuantity(product);
+	}
+}

@@ -3,6 +3,7 @@ global using BlazorEcommerce.Server.Data;
 global using Microsoft.EntityFrameworkCore;
 global using BlazorEcommerce.Server.Services.ProductSvc;
 global using BlazorEcommerce.Server.Services.CategorySvc;
+global using BlazorEcommerce.Server.Services.CartSvc;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ builder.Services.AddSwaggerGen();
 // services
 builder.Services.AddScoped<IProductSvc, ProductSvc>();
 builder.Services.AddScoped<ICategorySvc, CategorySvc>();
+builder.Services.AddScoped<ICartSvc, CartSvc>();
 //
 var app = builder.Build();
 
