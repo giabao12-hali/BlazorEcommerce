@@ -1,4 +1,5 @@
 ﻿@page "/register"
+@inject IAuthSvc AuthSvc
 
 <PageTitle>Register Account</PageTitle>
 
@@ -22,13 +23,28 @@
 		<ValidationMessage For="@(() => user.ConfirmPasswork)" />
 	</div>
 	<button type="submit" class="btn btn-primary">Register</button>
+	<div class="@messageCssClass">
+		<span>@message</span>
+	</div>
 </EditForm>
 
 @code {
 	UserRegister user = new UserRegister();
 
-	void HandleRegistration()
+	string message = string.Empty;
+	string messageCssClass = string.Empty;
+
+	async Task HandleRegistration()
 	{
-		Console.WriteLine($"Register User with Email {user.Email}.");
+		var result = await AuthSvc.Register(user);
+		message = result.Message;
+		if (result.Success)
+		{
+			messageCssClass = "text-success";
+		}
+		else
+		{
+			messageCssClass = "text-danger";
+		}
 	}
 }
