@@ -30,7 +30,7 @@ namespace BlazorEcommerce.Server.Services.AuthSvc
 			else if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
 			{
 				response.Success = false;
-				response.Message = "Wrong password";
+				response.Message = "Wrong password.";
 			}
 			else
 			{
