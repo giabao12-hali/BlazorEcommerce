@@ -1,0 +1,15 @@
+﻿@page "/order-success"
+@inject ICartSvc CartSvc
+
+<PageTitle>Thank you</PageTitle>
+
+<h3>Thank you!</h3>
+
+<span>Thank you for your order! You can check your orders in <a href="orders">here</a>.</span>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		await CartSvc.GetCartItemsCount();
+	}
+}

@@ -2,7 +2,7 @@
 {
 	public interface IOrderSvc
 	{
-		Task PlaceOrder();
+		Task<string> PlaceOrder();
 		Task<List<OrderOverviewResponse>> GetOrders();
 		Task<OrderDetailsResponse> GetOrderDetails(int orderId);
 	}
