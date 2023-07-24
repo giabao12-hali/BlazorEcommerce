@@ -29,5 +29,18 @@ namespace BlazorEcommerce.Server.Controllers
 			var result = await _cartSvc.StoreCartItems(cartItems);
 			return Ok(result);
 		}
+
+		[HttpGet("count")]
+		public async Task<ActionResult<ServiceResponse<int>>> GetCartItemsCount()
+		{
+			return await _cartSvc.GetCartItemsCount();
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<ServiceResponse<List<CartProductResponse>>>> GetDbCartProducts()
+		{
+			var result = await _cartSvc.GetDbCartProducts();
+			return Ok(result);
+		}
 	}
 }

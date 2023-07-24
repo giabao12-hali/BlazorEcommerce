@@ -1,6 +1,7 @@
 ﻿@inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject ICartSvc CartSvc
 
 <div class="dropdown">
 	<button @onclick="ToggleUserMenu"
@@ -42,6 +43,7 @@
 	private async Task Logout()
 	{
 		await LocalStorage.RemoveItemAsync("authToken");
+		await CartSvc.GetCartItemsCount();
 		await AuthenticationStateProvider.GetAuthenticationStateAsync();
 		NavigationManager.NavigateTo("");
 	}
