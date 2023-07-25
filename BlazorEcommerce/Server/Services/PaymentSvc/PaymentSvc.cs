@@ -47,10 +47,12 @@ namespace BlazorEcommerce.Server.Services.PaymentSvc
 			{
 				CustomerEmail = _authSvc.GetUserEmail(),
 				ShippingAddressCollection =
+				//add địa chỉ trong lúc thanh toán
 				new SessionShippingAddressCollectionOptions
 				{
 					AllowedCountries = new List<string> { "US" }
 				},
+				//
 				PaymentMethodTypes = new List<string>
 				{
 					"card"
