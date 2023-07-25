@@ -8,6 +8,7 @@ global using BlazorEcommerce.Client.Services.AuthSvc;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using BlazorEcommerce.Client.Services.OrderSvc;
 global using BlazorEcommerce.Client.Services.AddressSvc;
+global using BlazorEcommerce.Client.Services.ProductTypeSvc;
 using BlazorEcommerce.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<ICartSvc, CartSvc>();
 builder.Services.AddScoped<IAuthSvc, AuthSvc>();
 builder.Services.AddScoped<IOrderSvc, OrderSvc>();
 builder.Services.AddScoped<IAddressSvc, AddressSvc>();
+builder.Services.AddScoped<IProductTypeSvc, ProductTypeSvc>();
 //
 
 // services authorize

@@ -8,6 +8,7 @@ global using BlazorEcommerce.Server.Services.AuthSvc;
 global using BlazorEcommerce.Server.Services.OrderSvc;
 global using BlazorEcommerce.Server.Services.PaymentSvc;
 global using BlazorEcommerce.Server.Services.AddressSvc;
+global using BlazorEcommerce.Server.Services.ProductTypeSvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IAuthSvc, AuthSvc>();
 builder.Services.AddScoped<IOrderSvc, OrderSvc>();
 builder.Services.AddScoped<IPaymentSvc, PaymentSvc>();
 builder.Services.AddScoped<IAddressSvc, AddressSvc>();
+builder.Services.AddScoped<IProductTypeSvc, ProductTypeSvc>();
 //
 
 // authentication

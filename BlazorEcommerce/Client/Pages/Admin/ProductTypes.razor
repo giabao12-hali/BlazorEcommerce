@@ -1,0 +1,89 @@
+﻿@page "/admin/product-types"
+@inject IProductTypeSvc ProductTypeSvc
+@attribute [Authorize(Roles = "Admin")]
+@implements IDisposable
+
+<h3>Product Types</h3>
+
+@foreach (var productType in ProductTypeSvc.ProductTypes)
+{
+	@if (productType.Editing)
+	{
+		<EditForm Model="editingProductType" OnSubmit="UpdateProductType">
+			<div class="row">
+				<div class="col">
+					<InputText @bind-Value="editingProductType.Name" class="form-control"></InputText>
+				</div>
+				<div class="col">
+					<button type="submit" class="btn btn-primary">
+						<i class="oi oi-cloud-upload"></i>
+					</button>
+					<button class="btn btn-primary" @onclick="CancelEditing">
+						<i class="oi oi-circle-x"></i>
+					</button>
+				</div>
+			</div>
+		</EditForm>
+	}
+	else
+	{
+		<div class="row">
+			<div class="col">
+				@productType.Name
+			</div>
+			<div class="col">
+				<button class="btn btn-primary" @onclick="@(() => EditProductType(productType))">
+					<i class="oi oi-pencil"></i>
+				</button>
+			</div>
+		</div>
+	}
+}
+<button class="btn btn-primary" @onclick="CreateNewProductType">
+	<i class="oi oi-plus"></i>&nbsp;&nbsp;&nbsp;Add new product type
+</button>
+
+@code {
+	ProductType editingProductType = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await ProductTypeSvc.GetProductTypes();
+		ProductTypeSvc.OnChange += StateHasChanged;
+	}
+
+	public void Dispose()
+	{
+		ProductTypeSvc.OnChange -= StateHasChanged;
+	}
+
+	private void EditProductType(ProductType productType)
+	{
+		productType.Editing = true;
+		editingProductType = productType;
+	}
+
+	private void CreateNewProductType()
+	{
+		editingProductType = ProductTypeSvc.CreateNewProductType();
+	}
+
+	private async Task UpdateProductType()
+	{
+		if (editingProductType.IsNew)
+		{
+			await ProductTypeSvc.AddProductType(editingProductType);
+		}
+		else
+		{
+			await ProductTypeSvc.UpdateProductType(editingProductType);
+		}
+		editingProductType = new ProductType();
+	}
+
+	private async Task CancelEditing()
+	{
+		editingProductType = new ProductType();
+		await ProductTypeSvc.GetProductTypes();
+	}
+}
