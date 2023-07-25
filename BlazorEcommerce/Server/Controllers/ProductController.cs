@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorEcommerce.Server.Controllers
@@ -14,7 +15,14 @@ namespace BlazorEcommerce.Server.Controllers
 			_productSvc = productSvc;
 		}
 
-        [HttpGet]
+		[HttpGet("admin"), Authorize(Roles = "Admin")]
+		public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAdminProducts()
+		{
+			var result = await _productSvc.GetAdminProducts();
+			return Ok(result);
+		}
+
+		[HttpGet]
 		public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
 		{
 			var result = await _productSvc.GetProductsAsync();
