@@ -78,5 +78,24 @@
 				Message = "No products found.";
 			}
 		}
+
+		public async Task<Product> CreateProduct(Product product)
+		{
+			var result = await _httpClient.PostAsJsonAsync("api/product", product);
+			var newProduct = (await result.Content
+				.ReadFromJsonAsync<ServiceResponse<Product>>()).Data;
+			return newProduct;
+		}
+
+		public async Task<Product> UpdateProduct(Product product)
+		{
+			var result = await _httpClient.PutAsJsonAsync($"api/product", product);
+			return (await result.Content.ReadFromJsonAsync<ServiceResponse<Product>>()).Data;
+		}
+
+		public async Task DeleteProduct(Product product)
+		{
+			var result = await _httpClient.DeleteAsync($"api/product/{product.Id}");
+		}
 	}
 }
