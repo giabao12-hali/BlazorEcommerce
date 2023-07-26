@@ -27,11 +27,37 @@ else
 			<InputText id="title" @bind-Value="product.Title" class="form-control"></InputText>
 		</div>
 		<div class="mb-0">
-			<label for="image">Image Url</label>
-			<InputText id="title" @bind-Value="product.ImageUrl" class="form-control"></InputText>
+			<label for="imageUrl">Image Url</label>
+			<InputText id="imageUrl" @bind-Value="product.ImageUrl" class="form-control"></InputText>
+		</div>
+		<div class="mb-0" style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
+			@if (!string.IsNullOrEmpty(product.ImageUrl))
+			{
+				<img src="@product.ImageUrl"/>
+			}
+			else
+			{
+				foreach (var image in product.Images)
+				{
+					@*<img src="@image.Data" />
+					<button type="button" @onclick="(() => RemoveImage(image.Id))">Remove</button>*@
+					<MudCard Class="ma-2">
+						<MudCardContent>
+							<MudImage Src="@image.Data"/>
+						</MudCardContent>
+						<MudCardActions Style="justify-content: center;">
+							<MudButton 
+								Variant="Variant.Filled" 
+								Color="Color.Error" 
+								OnClick="@(() => RemoveImage(image.Id))">Remove</MudButton>
+						</MudCardActions>
+					</MudCard>
+				}
+			}
 		</div>
 		<div class="mb-0">
-			<img src="@product.ImageUrl"/>
+			<label for="images">Image(s)</label>
+			<InputFile id="images" OnChange="OnFileChange" multiple class="form-control"></InputFile>
 		</div>
 		<div class="mb-0">
 			<label for="description">Description</label>
@@ -207,6 +233,31 @@ else
 		{	
 			await ProductSvc.DeleteProduct(product);
 			NavigationManager.NavigateTo("admin/products");
+		}
+	}
+
+	async Task OnFileChange(InputFileChangeEventArgs e)
+	{
+		var format = "image/png";
+		foreach(var image in e.GetMultipleFiles(int.MaxValue))
+		{
+			var resizedImage = await image.RequestImageFileAsync(format, 200, 200);
+			var buffer = new byte[resizedImage.Size];
+			await resizedImage.OpenReadStream().ReadAsync(buffer);
+			var imageDate = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+			product.Images.Add(new Image
+			{
+				Data = imageDate,
+			});
+		}
+	}
+
+	void RemoveImage(int id)
+	{
+		var image = product.Images.FirstOrDefault(i => i.Id == id);
+		if(image != null)
+		{
+			product.Images.Remove(image);
 		}
 	}
 }

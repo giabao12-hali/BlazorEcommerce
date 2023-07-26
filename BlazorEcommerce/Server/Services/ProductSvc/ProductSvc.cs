@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace BlazorEcommerce.Server.Services.ProductSvc
+﻿namespace BlazorEcommerce.Server.Services.ProductSvc
 {
 	public class ProductSvc : IProductSvc
 	{
@@ -20,6 +18,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 				Data = await _context.Products
 				.Where(p => p.Visible && !p.Deleted)
 				.Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
+				.Include(p => p.Images)
 				.ToListAsync()
 			};
 
@@ -36,6 +35,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 				product = await _context.Products
 				.Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
 				.ThenInclude(v => v.ProductType)
+				.Include(p => p.Images)
 				.FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted && p.Visible);
 			}
 			else
@@ -43,6 +43,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 				product = await _context.Products
 				.Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
 				.ThenInclude(v => v.ProductType)
+				.Include(p => p.Images)
 				.FirstOrDefaultAsync(p => p.Id == productId && !p.Deleted && p.Visible);
 			}
 
@@ -66,6 +67,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 					.Where(p => p.Category.Url.ToLower().Equals(categoryUrl.ToLower()) &&
 						p.Visible && !p.Deleted)
 					.Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
+					.Include(p => p.Images)
 					.ToListAsync()
 			};
 			return response;
@@ -80,6 +82,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 									p.Description.ToLower().Contains(searchText.ToLower()) && 
 									p.Visible && !p.Deleted)
 								.Include(p => p.Variants)
+								.Include(p => p.Images)
 								.Skip((page - 1) * (int)pageResults)
 								.Take((int)pageResults)
 								.ToListAsync();
@@ -150,6 +153,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 				Data = await _context.Products
 					.Where(p => p.Featured && p.Visible && !p.Deleted)
 					.Include(p => p.Variants.Where(v => v.Visible && !v.Deleted))
+					.Include(p => p.Images)
 					.ToListAsync()
 			};
 			return response;
@@ -163,6 +167,7 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 				.Where(p => !p.Deleted)
 				.Include(p => p.Variants.Where(v => !v.Deleted))
 				.ThenInclude(v => v.ProductType)
+				.Include(p => p.Images)
 				.ToListAsync()
 			};
 
@@ -185,7 +190,9 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 
 		public async Task<ServiceResponse<Product>> UpdateProduct(Product product)
 		{
-			var dbProduct = await _context.Products.FindAsync(product.Id);
+			var dbProduct = await _context.Products
+				.Include(p => p.Images)
+				.FirstOrDefaultAsync(p => p.Id == product.Id);
 			if (dbProduct == null)
 			{
 				return new ServiceResponse<Product>
@@ -201,6 +208,13 @@ namespace BlazorEcommerce.Server.Services.ProductSvc
 			dbProduct.CategoryId = product.CategoryId;
 			dbProduct.Visible = product.Visible;
 			dbProduct.Featured = product.Featured;
+
+			var productImgaes = dbProduct.Images;
+			_context.Images.RemoveRange(productImgaes);
+
+			// xóa hình theo ID
+			dbProduct.Images = product.Images;
+			//
 
             foreach (var variant in product.Variants)
             {
