@@ -5,6 +5,6 @@ I am author and I think I did a pretty good job.
 just kidding.
 <br />
 
-1. Add migration & Update your database.
+1. Add migration & Update your database with nuget package.
 2. Register an Account for using an application.
 3. Enjoy. 🌟
