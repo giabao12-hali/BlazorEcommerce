@@ -8,14 +8,14 @@ namespace BlazorEcommerce.Server.Services.PaymentSvc
 		private readonly ICartSvc _cartSvc;
 		private readonly IAuthSvc _authSvc;
 		private readonly IOrderSvc _orderSvc;
-
-		const string secret = "whsec_9ec2cc26bebae9dd18eb833e080d4e3faa756d0a442989a64e79627fe611a56d";
+  
+		const string secret = "..."; // Replace your Secret Key
 
 		public PaymentSvc(ICartSvc cartSvc,
 			IAuthSvc authSvc,
 			IOrderSvc orderSvc)
         {
-			StripeConfiguration.ApiKey = "sk_test_51NX7AtFxio8Y6aScCBAil0ws6kuT5IGTamwhXBnCuSGxNfJc9GthC6PfJG5l8svhjhS1G7LwYwyddkCiTKSCuYng00lIyvtcNN";
+			StripeConfiguration.ApiKey = "..."; // Replace your API Stripe Key
 
 			_cartSvc = cartSvc;
 			_authSvc = authSvc;
@@ -59,8 +59,8 @@ namespace BlazorEcommerce.Server.Services.PaymentSvc
 				},
 				LineItems = lineItems,
 				Mode = "payment",
-				SuccessUrl = "https://localhost:7205/order-success",
-				CancelUrl = "https://localhost:7205/cart"
+				SuccessUrl = "https://localhost:7205/order-success", // Replace your URL
+				CancelUrl = "https://localhost:7205/cart" // Replace your URL
 			};
 
 			var service = new SessionService();
